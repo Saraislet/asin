@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="w3-container">
+    {% if show_error %}
+        <p style="color: red">{{error_msg}}</p>
+    {% endif %}
+</div>
+
+<div class="w3-container w3-padding-32">
+    <div class="w3-card-4" style="max-width:600px">
+        <div class="w3-container w3-light-blue">
+            <h3>Enter an Amazon App Store URL:</h3>
+        </div>
+        <div class="w3-container">
+            <form action="/search" method="POST" class="w3-container">
+                <input type="text" name="url" class="w3-input w3-border w3-light-grey w3-margin" value="http://www.amazon.com/Facebook/dp/B0094BB4TW">
+                <input type="submit" name="my-form" value="Submit" class="w3-btn w3-light-blue w3-margin">
+            </form>
+        </div>
+    </div>
+</div>
+<div>
+{% if show_result %}
+    <p>App: {{app_name}}</p>
+    <p>ASIN: {{asin}}</p>
+    <p>Release Date: {{release_date}}</p>
+{% endif %}
+</div>
+{% endblock %}
