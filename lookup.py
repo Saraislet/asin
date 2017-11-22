@@ -93,7 +93,6 @@ def lookup_asin(asin, domain):
     
     print(r.text)
     
-    # TODO: parse response XML for app details.
     response = parse_response(r)
     app_info = {}
     

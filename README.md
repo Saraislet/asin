@@ -12,6 +12,5 @@ This app retrieves basic information about an app from the Amazon Appstore.
 
 ## TODO
 
-* Fix signature (check encoding, and verify that construction matches requirements)
 * Add unit tests
 * Find API to retrieve app release change notes (or weigh need for and tradeoffs of scraping from HTML)
