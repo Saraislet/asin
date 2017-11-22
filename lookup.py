@@ -1,7 +1,6 @@
 import os, datetime, hashlib, hmac, base64
 import requests
 import xmltodict
-import local_MWS_tokens
 
 # Test Amazon MWS API at https://mws.amazonservices.com/scratchpad/index.html
 # See Amazon MWS Documentation at https://docs.developer.amazonservices.com/en_US/dev_guide/DG_IfNew.html
@@ -21,8 +20,8 @@ t = datetime.datetime.utcnow()
 amz_date = t.strftime('%Y-%m-%dT%H:%M:%SZ')
 
 url = endpoint + path
-access_key = local_MWS_tokens.AWSAccessKeyId
-secret_key = local_MWS_tokens.SecretKey
+access_key = os.environ['AWSAccessKeyId']
+secret_key = os.environ['SecretKey']
 secret = bytes(secret_key, 'utf-8')
 
 
