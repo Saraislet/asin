@@ -56,7 +56,7 @@ def lookup_asin(asin, domain):
     # Construct request parameters:
     payload = {'AWSAccessKeyId': os.environ['AWSAccessKeyId'], 
                'Action': "GetMatchingProduct", 
-               'SellerID': os.environ['SellerID'], 
+               'SellerId': os.environ['SellerId'], 
                'MWSAuthToken': os.environ['MWSAuthToken'], 
                'SignatureVersion': '2', 
                'Timestamp': amz_date, 
@@ -70,7 +70,7 @@ def lookup_asin(asin, domain):
     request_parameters += "&Action=" + payload['Action']
     request_parameters += "&MWSAuthToken=" + payload['MWSAuthToken']
     request_parameters += "&MarketplaceId=" + payload['MarketplaceId']
-    request_parameters += "&SellerID=" + payload['SellerID']
+    request_parameters += "&SellerId=" + payload['SellerId']
     request_parameters += "&SignatureMethod=" + payload['SignatureMethod']
     request_parameters += "&SignatureVersion=" + payload['SignatureVersion']
     request_parameters += "&Timestamp=" + urllib.parse.quote(payload['Timestamp'])
