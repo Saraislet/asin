@@ -7,16 +7,16 @@ app = Flask(__name__)
 
 @app.route('/')
 def main():
-    return render_template("app.html")
+    return render_template('app.html')
 
 
 @app.route('/search', methods=['POST'])
 def search():
     # Look up the app entered with Amazon MWS API, and return details.
     
-    # Retrieve string entered in "Amazon App Store URL" input.
+    # Retrieve string entered in Amazon App Store URL input.
     url = request.form['url']
-    print("Searching for app at " + url)
+    print('Searching for app at ' + url)
     
     try:
         # Identify the domain of the URL to use the appropriate MarketplaceId.
@@ -26,7 +26,7 @@ def search():
         asin = get_asin_from_url(url)
         
         # Lookup ASIN in Amazon MWS.
-        print("Searching Amazon MWS for ASIN \'" + asin + "\'.")
+        print('Searching Amazon MWS for ASIN \'' + asin + '\'.')
         app_info = lookup.lookup_asin(asin, domain)
         app_name = app_info['app_name']
         release_date = app_info['release_date']
@@ -37,14 +37,14 @@ def search():
     
     except ValueError as e:
         show_error = True
-        error_msg = "Could not identify app from URL."
-        error_msg += " Please enter an Amazon app store URL from amazon.com, amazon.ca, or amazon.com.mx."
+        error_msg = 'Could not identify app from URL.'
+        error_msg += ' Please enter an Amazon app store URL from amazon.com, amazon.ca, or amazon.com.mx.'
         return render_template('app.html', **locals())
     
     except BaseException as e:
         show_error = True
         error_msg = e
-        print("Error in lookup():", e)   
+        print('Error in lookup():', e)   
         return render_template('app.html', **locals())
 
 
@@ -56,8 +56,8 @@ def get_asin_from_url(string):
         return asin
 
     except BaseException as e:
-        print("Error in get_asin_from_url():", e)
-        raise ValueError("Cannot find ASIN in URL.")
+        print('Error in get_asin_from_url():', e)
+        raise ValueError('Cannot find ASIN in URL.')
         return
 
 
@@ -69,8 +69,8 @@ def get_domain_from_url(string):
         return domain
 
     except BaseException as e:
-        print("Error in get_domain_from_url():", e)
-        raise ValueError("Cannot find domain in URL.")
+        print('Error in get_domain_from_url():', e)
+        raise ValueError('Cannot find domain in URL.')
         return
 
 

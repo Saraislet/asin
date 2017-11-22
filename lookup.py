@@ -55,7 +55,7 @@ def lookup_asin(asin, domain):
     
     # Construct request parameters:
     payload = {'AWSAccessKeyId': os.environ['AWSAccessKeyId'], 
-               'Action': "GetMatchingProduct", 
+               'Action': 'GetMatchingProduct', 
                'SellerId': os.environ['SellerId'], 
                'MWSAuthToken': os.environ['MWSAuthToken'], 
                'SignatureVersion': '2', 
@@ -65,28 +65,28 @@ def lookup_asin(asin, domain):
                'MarketplaceId': MarketplaceId,
                'ASINList.ASIN.1': asin}
 
-    request_parameters = "ASINList.ASIN.1=" + payload['ASINList.ASIN.1']
-    request_parameters += "&AWSAccessKeyId=" + payload['AWSAccessKeyId']
-    request_parameters += "&Action=" + payload['Action']
-    request_parameters += "&MWSAuthToken=" + payload['MWSAuthToken']
-    request_parameters += "&MarketplaceId=" + payload['MarketplaceId']
-    request_parameters += "&SellerId=" + payload['SellerId']
-    request_parameters += "&SignatureMethod=" + payload['SignatureMethod']
-    request_parameters += "&SignatureVersion=" + payload['SignatureVersion']
-    request_parameters += "&Timestamp=" + urllib.parse.quote(payload['Timestamp'])
-    request_parameters += "&Version=" + payload['Version']
+    request_parameters = 'ASINList.ASIN.1=' + payload['ASINList.ASIN.1']
+    request_parameters += '&AWSAccessKeyId=' + payload['AWSAccessKeyId']
+    request_parameters += '&Action=' + payload['Action']
+    request_parameters += '&MWSAuthToken=' + payload['MWSAuthToken']
+    request_parameters += '&MarketplaceId=' + payload['MarketplaceId']
+    request_parameters += '&SellerId=' + payload['SellerId']
+    request_parameters += '&SignatureMethod=' + payload['SignatureMethod']
+    request_parameters += '&SignatureVersion=' + payload['SignatureVersion']
+    request_parameters += '&Timestamp=' + urllib.parse.quote(payload['Timestamp'])
+    request_parameters += '&Version=' + payload['Version']
         
 
     # Construct message to sign, usign request parameters:
-    msg = method + "\n"
-    msg += host + "\n"
-    msg += path + "\n"
+    msg = method + '\n'
+    msg += host + '\n'
+    msg += path + '\n'
     msg += request_parameters
     
     # Sign the message
-    print("Message to sign: " + msg)
+    print('Message to sign: ' + msg)
     signature = sign(secret, bytes(msg, 'utf-8'))
-    print("Signature: " + str(signature))
+    print('Signature: ' + str(signature))
     
     payload['Signature'] = signature
     r = requests.post(url, params=payload)
@@ -99,11 +99,14 @@ def lookup_asin(asin, domain):
     
     if 'ErrorResponse' in response:
         error_message = response['ErrorResponse']['Error']['Message']
-        error_message += "\n\n" + "Query string:\n" + msg
-        raise OSError("Error retrieving data from Amazon App Store: " + error_message)
+        error_message += '\n\n' + 'Query string:\n' + msg
+        raise OSError('Error retrieving data from Amazon App Store: ' + error_message)
         return
-    else:
-        app_info['app_name'] = response['GetMatchingProductResult']['Product']['AttributeSets']['ns2:ItemAttributes']['ns2:Label']
-        app_info['release_date'] = response['GetMatchingProductResult']['Product']['AttributeSets']['ns2:ItemAttributes']['ns2:ReleaseDate']
-        app_info['change_notes'] = "" 
+    elif 'GetMatchingProductResponse' in response:
+        app_info['app_name'] = response['GetMatchingProductResponse']['GetMatchingProductResult']['Product']['AttributeSets']['ns2:ItemAttributes']['ns2:Label']
+        app_info['release_date'] = response['GetMatchingProductResponse']['GetMatchingProductResult']['Product']['AttributeSets']['ns2:ItemAttributes']['ns2:ReleaseDate']
+        app_info['change_notes'] = '' 
         return app_info
+    else:
+        raise OSError('Error retrieving data from Amazon App Store: ' + str(response))
+        return
