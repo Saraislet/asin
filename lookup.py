@@ -1,4 +1,5 @@
-import os, datetime, hashlib, hmac, base64
+import os, datetime, urllib
+import hashlib, hmac, base64
 import requests
 import xmltodict
 
@@ -70,7 +71,7 @@ def lookup_asin(asin, domain):
     request_parameters += "&MWSAuthToken=" + payload['MWSAuthToken']
     request_parameters += "&MWSAuthToken=" + payload['MWSAuthToken']
     request_parameters += "&SignatureVersion=" + payload['SignatureVersion']
-    request_parameters += "&Timestamp=" + amz_date_encoded
+    request_parameters += "&Timestamp=" + payload['Timestamp']
     request_parameters += "&Version=" + payload['Version']
     request_parameters += "&SignatureMethod=" + payload['SignatureMethod']
     request_parameters += "&MarketplaceId=" + payload['MarketplaceId']
@@ -81,10 +82,11 @@ def lookup_asin(asin, domain):
     msg += host + "\n"
     msg += path + "\n"
     msg += request_parameters
+    msg_url_encoded = urllib.parse.quote(msg)
     
     # Sign the message
     print("Message to sign: " + msg)
-    signature = sign(secret, bytes(msg, 'utf-8'))
+    signature = sign(secret, bytes(msg_url_encoded, 'utf-8'))
     print("Signature: " + str(signature))
     
     payload['Signature'] = signature
