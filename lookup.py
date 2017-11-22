@@ -1,4 +1,4 @@
-import datetime, hashlib, hmac, base64
+import os, datetime, hashlib, hmac, base64
 import requests
 import xmltodict
 import local_MWS_tokens
@@ -34,10 +34,10 @@ def sign(key, msg):
 def get_marketplace_id(domain):
     # Return the appropriate MarketplaceId for the domain (default is *.com).
     return{
-            'com': local_MWS_tokens.MarketplaceId_com,
-            'ca': local_MWS_tokens.MarketplaceId_ca,
-            'com.mx': local_MWS_tokens.MarketplaceId_com_mx
-            }.get(domain, local_MWS_tokens.MarketplaceId_com)
+            'com': os.environ['MarketplaceId_com'],
+            'ca': os.environ['MarketplaceId_ca'],
+            'com.mx': os.environ['MarketplaceId_com_mx']
+            }.get(domain, os.environ['MarketplaceId_com'])
 
 
 def parse_response(xml):
@@ -53,10 +53,10 @@ def lookup_asin(asin, domain):
     MarketplaceId = get_marketplace_id(domain)
     
     # Construct request parameters:
-    payload = {'AWSAccessKeyId': local_MWS_tokens.AWSAccessKeyId, 
+    payload = {'AWSAccessKeyId': os.environ['AWSAccessKeyId'], 
                'Action': "GetMatchingProduct", 
-               'SellerID': local_MWS_tokens.SellerID, 
-               'MWSAuthToken': local_MWS_tokens.MWSAuthToken, 
+               'SellerID': os.environ['SellerID'], 
+               'MWSAuthToken': os.environ['MWSAuthToken'], 
                'SignatureVersion': '2', 
                'Timestamp': amz_date, 
                'Version': '2011-10-01', 
