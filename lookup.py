@@ -85,7 +85,7 @@ def lookup_asin(asin, domain):
     msg_url_encoded = urllib.parse.quote(msg)
     
     # Sign the message
-    print("Message to sign: " + msg)
+    print("Message to sign: " + msg_url_encoded)
     signature = sign(secret, bytes(msg_url_encoded, 'utf-8'))
     print("Signature: " + str(signature))
     
