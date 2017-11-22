@@ -18,6 +18,7 @@ path = '/Products/2011-10-01'
 # Time string format (must be in UTC): 2017-11-19T20:47:19Z
 t = datetime.datetime.utcnow()
 amz_date = t.strftime('%Y-%m-%dT%H:%M:%SZ')
+amz_date_encoded = t.strftime('%Y-%m-%dT%H%%3A%M%%3A%SZ')
 
 url = endpoint + path
 access_key = os.environ['AWSAccessKeyId']
@@ -69,7 +70,7 @@ def lookup_asin(asin, domain):
     request_parameters += "&MWSAuthToken=" + payload['MWSAuthToken']
     request_parameters += "&MWSAuthToken=" + payload['MWSAuthToken']
     request_parameters += "&SignatureVersion=" + payload['SignatureVersion']
-    request_parameters += "&Timestamp=" + payload['Timestamp']
+    request_parameters += "&Timestamp=" + amz_date_encoded
     request_parameters += "&Version=" + payload['Version']
     request_parameters += "&SignatureMethod=" + payload['SignatureMethod']
     request_parameters += "&MarketplaceId=" + payload['MarketplaceId']
